@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require('mongoose')
+const userRoute = require('./routes/userRoute');
 
 const port = 3001;
 const app = express();
@@ -22,6 +23,8 @@ mongoose.connect(uri+db_name, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+app.use("/user", userRoute);
 
 const connection = mongoose.connection;
 connection.once("open", async () => {

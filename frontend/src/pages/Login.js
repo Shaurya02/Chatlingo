@@ -1,10 +1,26 @@
 import React from 'react';
 import '../css/LoginCSS.css';
+import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 function Login() {
-  function addUser(user) {
+  // const uri = process.env.BACKEND_URI;
+  const uri = 'http://localhost:3001';
+  async function addUser(user) {
+    const newTicket = {
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      query: user.query,
+      notes: user.notes,
+      creationTimeStamp: new Date(new Date().toISOString())
+    };
+
+    const res = await axios.post(`${uri}/user/new-user`, newTicket);
+    if (res.status === 200 || res.status === 'OK') {
+      window.location.reload();
+    }
   }
 
   const validationSchema = Yup.object().shape({
@@ -23,7 +39,7 @@ function Login() {
   return (
     <div className="container centered" style={{ marginTop: '20px' }}>
       <div className="row justify-content-center shadow-lg p-3 mb-5 loginColumn bg-white rounded loginContainer">
-        <div className="col-lg-5 col-11 d-flex flex-column ms-5 loginColumn">
+        <div className="col-lg-4 col-11 d-flex flex-column ms-5 loginColumn">
           <Formik
             initialValues={{
               name: '',
@@ -66,7 +82,7 @@ function Login() {
             )}
           </Formik>
         </div>
-        <div className="col-lg-5 col-11 d-flex flex-column ms-5 d-flex flex-column loginColumn justify-content-center gradient-custom-2 h-100 mb-4">
+        <div className="col-lg-6 col-10 d-flex flex-column ms-5 d-flex flex-column loginColumn justify-content-center gradient-custom-2 h-100 mb-4" style={{marginTop:'50px'}}>
             <div className="text-white px-3 py-4 p-md-5 mx-md-4">
               <h4 class="mb-4">We are more than just a company</h4>
               <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
